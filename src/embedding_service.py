@@ -23,6 +23,7 @@ class EmbeddingService:
                     batch_size=batch_size,
                     engine=self.config.backend,
                     dtype=dtype,
+                    device=self.config.device,
                     model_warmup=False,
                     lengths_via_tokenize=True,
                 )

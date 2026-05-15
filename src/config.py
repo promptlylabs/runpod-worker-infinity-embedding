@@ -28,6 +28,10 @@ class EmbeddingServiceConfig:
         return os.environ.get("BACKEND", DEFAULT_BACKEND)
 
     @cached_property
+    def device(self):
+        return os.environ.get("INFINITY_DEVICE", "cuda")
+
+    @cached_property
     def model_names(self) -> list[str]:
         model_names = os.environ.get("MODEL_NAMES")
         if not model_names:

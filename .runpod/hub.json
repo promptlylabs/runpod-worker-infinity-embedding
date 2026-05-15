@@ -39,6 +39,15 @@
         }
       },
       {
+        "key": "INFINITY_DEVICE",
+        "input": {
+          "name": "Device",
+          "type": "string",
+          "description": "Device to run inference on: cuda, cpu, or mps.",
+          "default": "cuda"
+        }
+      },
+      {
         "key": "DTYPES",
         "input": {
           "name": "Data Types",
