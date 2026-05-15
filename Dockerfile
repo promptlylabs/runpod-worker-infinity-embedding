@@ -4,6 +4,8 @@ ENV HF_HOME=/runpod-volume
 
 # install python 3.11 stable from deadsnakes PPA (ubuntu 22.04 only ships python3.11.0rc1
 # which breaks torch >=2.4 because sys.get_int_max_str_digits was added in 3.11.0 final)
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
 RUN apt-get update && apt-get install -y software-properties-common \
     && add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y \
