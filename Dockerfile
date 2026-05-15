@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04 AS base
 
 ENV HF_HOME=/runpod-volume
 
@@ -27,7 +27,7 @@ COPY requirements.txt /requirements.txt
 RUN uv pip install -r /requirements.txt --system
 
 # install torch
-RUN pip install torch==2.6.0+cu124 --index-url https://download.pytorch.org/whl/cu124 --no-cache-dir
+RUN pip install torch==2.7.0+cu128 --index-url https://download.pytorch.org/whl/cu128 --no-cache-dir
 
 # Add src files
 ADD src .
