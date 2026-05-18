@@ -22,12 +22,11 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py && rm get-pip
 # install uv
 RUN pip install uv
 
-# install python dependencies
+RUN pip install torch==2.7.0+cu128 --index-url https://download.pytorch.org/whl/cu128 --no-cache-dir
+
+# install python dependencies (torch is already present; uv will reuse it)
 COPY requirements.txt /requirements.txt
 RUN uv pip install -r /requirements.txt --system
-
-# install torch
-RUN pip install torch==2.7.0+cu128 --index-url https://download.pytorch.org/whl/cu128 --no-cache-dir
 
 # Add src files
 ADD src .

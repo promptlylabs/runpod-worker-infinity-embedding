@@ -8,11 +8,25 @@ from utils import (
 )
 
 import asyncio
+import torch
 
 
 class EmbeddingService:
     def __init__(self):
         self.config = EmbeddingServiceConfig()
+        if self.config.device == "cuda" and not torch.cuda.is_available():
+            raise RuntimeError(
+                "INFINITY_DEVICE=cuda but torch.cuda.is_available() is False. "
+                "Check that the CUDA torch wheel was installed and the GPU is visible."
+            )
+        print(
+            f"[startup] torch={torch.__version__} "
+            f"cuda_available={torch.cuda.is_available()} "
+            f"device_count={torch.cuda.device_count()} "
+            f"device_name={torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'N/A'} "
+            f"infinity_device={self.config.device}",
+            flush=True,
+        )
         engine_args = []
         for model_name, batch_size, dtype in zip(
             self.config.model_names, self.config.batch_sizes, self.config.dtypes
@@ -30,6 +44,15 @@ class EmbeddingService:
             )
 
         self.engine_array = AsyncEngineArray.from_args(engine_args)
+
+        for engine in self.engine_array:
+            for replica in engine._model_replicas:
+                try:
+                    param_device = next(replica.parameters()).device
+                    print(f"[startup] model={engine._engine_args.model_name_or_path} param_device={param_device}", flush=True)
+                except Exception as e:
+                    print(f"[startup] could not inspect model device: {e}", flush=True)
+
         self.is_running = False
         self.sepamore = asyncio.Semaphore(1)
 

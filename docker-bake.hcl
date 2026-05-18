@@ -11,11 +11,11 @@ variable "WORKER_VERSION" {
 }
 
 group "all" {
-  targets = ["worker-1241"]
+  targets = ["worker-1281"]
 }
 
-target "worker-1241" {
-  tags = ["${REPOSITORY}/worker-infinity-embedding:${WORKER_VERSION}-cuda12.4.1"]
+target "worker-1281" {
+  tags = ["${REPOSITORY}/worker-infinity-embedding:${WORKER_VERSION}-cuda12.8.1"]
   context = "."
   dockerfile = "Dockerfile"
   output = ["type=docker,push=${PUSH}"]
